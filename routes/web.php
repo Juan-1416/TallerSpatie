@@ -14,20 +14,22 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 Route::get('/', function () {
     return view('Template.Template');
 });
 
-Route::resource('user', UserController::class);
+//Route::resource('user', UserController::class);
 
-Route::resource('index', UserController::class);
+// Route::resource('index', UserController::class);
 
+Route::get('/index',[App\Http\Controllers\UserController::class,'index'])->name('index');
+Route::get('/user.create',[App\Http\Controllers\UserController::class,'create'])->name('user.create');
+Route::post('/user.store',[App\Http\Controllers\UserController::class,'store'])->name('user.store');
+Route::get('/user.edit',[App\Http\Controllers\UserController::class,'edit'])->name('user.edit');
+Route::get('/user.destroy',[App\Http\Controllers\UserController::class,'destroy'])->name('user.destroy');
 
-Route::get('/user',[App\Http\Controllers\UserControllers::class,'index'])->name('user.index');
+Route::get('/roles',[App\Http\Controllers\UserController::class,'roles'])->name('user.index');
 
 

@@ -21,25 +21,25 @@ class UserSeeder extends Seeder
         User::create([
             'name'=>'lolita',
             'email'=>'lolita@gmail.com',
-            'password'=>Hash::make('1234')
+            'password'=>bcrypt('1234'),
         ])->assignRole('admin');
 
         User::create([
             'name'=>'administrador',
             'email'=>'admin@gmail.com',
-            'password'=>Hash::make('1234')
+            'password'=>bcrypt('1234'),
         ])->assignRole('admin');
 
         User::create([
             'name'=>'carlos',
             'email'=>'carlos@gmail.com',
-            'password'=>Hash::make('1234')
-        ])->assignRole('user');
+            'password'=>bcrypt('1234'),
+        ])->assignRole('admin');
 
         User::create([
             'name'=>'duvan',
             'email'=>'duvan@gmail.com',
-            'password'=>Hash::make('1234')
+            'password'=>bcrypt('1234'),
         ])->assignRole('admin');
     }
 }

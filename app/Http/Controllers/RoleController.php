@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Models\Role;
 
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,11 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //$users = User::simplePaginate(5);
-       // return view('User.index',compact('users'));
-
-       $users = User::orderBy('name','ASC')->get();
-       return view('User.index',compact('users'));
+        $permission = Permission::get();
+        $role = Role::orderBy('id','DESC')->paginate(5);
+        return view('roles.index',compact('role','permission'));
     }
 
     /**
@@ -30,8 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::All();
-        return view('User.create',compact('roles'));
+        //
     }
 
     /**
@@ -42,19 +37,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'=>'required|max:255',
-            'email'=> 'required|unique:user|email|max:255',
-            'password'=> 'required|between:8,255|confirmed',
-            'password_comfirmation'=> 'required',
+        $this->validate($request,[
+            'name'=> 'required',
+            'permission'=> 'required'
         ]);
-        User::create([
-            'name'=> $request['name'],
-            'email'=> $request['email'],
-            'password'=> Hash::make($request['password']),
-        ])->assignRole($request['role']);
 
-        return redirect()->route('user.create');
+        $role = Role::create(['name'=> $request->input('name')]);
+        $role->syncPermissions($request->input('permission'));
+
+        return redirect()->route('role.index');
     }
 
     /**
@@ -74,10 +65,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
-        $user = User::findOrFail($id);
-        return view('User.edit',compact('user'));
+        //
     }
 
     /**
@@ -89,13 +79,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->rol = $request->rol;
-        $user->save();
-        return redirect()->route('index.index');
+        //
     }
 
     /**
@@ -106,7 +90,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user->delete();
-        return redirect()->route('user.index');
+        //
     }
 }

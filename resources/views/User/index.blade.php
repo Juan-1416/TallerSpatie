@@ -1,31 +1,44 @@
 @extends('Template.Template')
 @section('plantillaWeb')
 <table class="table">
-  <div class="container col-12">
+  {{-- <div class="container col-12">
   <a href="/user/create" class="btn btn-primary">Crear</a>
-  </div>
+  </div> --}}
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Nombre</th>
+        <th scope="col">Name</th>
         <th scope="col">Email</th>
-        <th scope="col">Password</th>
-        <th scope="col">Rol</th>
+        <th scope="col">Role</th>
+
 
       </tr>
     </thead>
     <tbody>
         @foreach ($users as $user)
         <tr>
-            <th scope="row">{{$user->id}}</th>
+            <td> {{$user->id}}</td>
             <td>{{$user->name}}</td>
             <td>{{$user->email}}</td>
-            <td>{{$user->password}}</td>
+            <td>{{$user->rol}}</td>
 
             <td>
-            @foreach($user->roles as $r)
-            {{$r->name}}
-            @endforeach
+            @if ($user->roles->isNotEmpty())
+
+                 @foreach($user->roles as $role)
+                 <span class="badge badge-secondary">
+                 {{$role->name}}
+                 </span>
+                 @endforeach
+            @endif
+            </td>
+
+            <td>
+                @can('profile.password')
+              <a href="/users/{{$user['id']}}"><i class="fa fa-eye"></i></a>
+              @endcan
+              <a href="/users/{{$user['id']}}/edit"><i class="fa fa-eye"></i></a>
+              <a href="#"data-toggle="modal"data-target="#deleteModal"data-userid="{{$user['id']}}"><i class="fas fa-trash-alt"></i></a>
             </td>
 
             <td>
